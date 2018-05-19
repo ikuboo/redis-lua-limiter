@@ -11,7 +11,7 @@
 ### 2.使用 
 ```JAVA
 
-     JedisCluster jedis = new JedisCluster(new HostAndPort("ikuboo1", 6379));
+     JedisCluster jedis = new JedisCluster(new HostAndPort("127.0.0.1", 6379));
      //速率为:5次/秒
      RateLimiter rateLimiter = RateLimiter.create(5L,jedis);
      //获取许可
@@ -25,7 +25,7 @@
  ```
 ### 3.参数
 ```JAVA
-public static RateLimiter create(Long rate,String key,LimiterType limiterType,Jedis jedisClient)
+public static RateLimiter create(Long rate,String key,LimiterType limiterType,JedisCluster jedisCluster)
 ```
 * rate:速率
 * key:限流器的key,通过key隔离不同的限流器,默认为UUID
@@ -37,7 +37,7 @@ public static RateLimiter create(Long rate,String key,LimiterType limiterType,Je
 		* 优点: 不依赖服务器时间
 		* 缺点: 1.强依赖redis中1秒的过期策略 2:redis cluster模式下所有请求都会打到一个分片上
 	* 如果量小用server模式没问题，量大还是建议用client模式
-* jedisClient:redis客户端,如果redis为cluster模式fork项目自己改一下吧。
+* jedisCluster:redis客户端,如果redis为cluster模式fork项目自己改一下吧。
  
 
  
