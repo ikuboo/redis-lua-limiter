@@ -1,6 +1,6 @@
 分布式限流
 ====
-###基于 `Redis` 和 `Lua` 实现的分布式限流功能
+### 基于 `Redis` 和 `Lua` 实现的分布式限流功能
 
 ### 1.概述
 * 限流目前一般都俩种`单机限流`和`分布式限流`<br>
@@ -25,17 +25,18 @@
  ```
 ### 3.参数
 ```JAVA
-	public static RateLimiter create(Long rate,String key,LimiterType limiterType,Jedis jedisClient)
+public static RateLimiter create(Long rate,String key,LimiterType limiterType,Jedis jedisClient)
 ```
 * rate:速率
 * key:限流器的key,通过key隔离不同的限流器,默认为UUID
-* limiterType:限流模式：server 和 client 模式,默认为client模式(如果量小用server模式没问题，量大还是建议用client模式)
+* limiterType:限流模式,`server` 和 `client`俩种模式,默认为client模式
 	* client模式:按照时间戳每秒生成一个key
-		* 优点:1.redis cluster模式可以散列到不同的分片,避免单点,提升性能 2.不会依赖redis key 的过期时间
-		* 缺点:需要保证所有的服务器时间相同
+		* 优点: 1.redis cluster模式可以散列到不同的分片,避免单点,提升性能 2.不会依赖redis key 的过期时间
+		* 缺点: 需要保证所有的服务器时间相同
 	* server模式:key固定不变
-		* 有点:不依赖服务器时间
-		* 缺点:1.强依赖redis中1秒的过期策略 2:redis cluster模式下因为key是固定的所有请求都会打到一个片上
+		* 优点: 不依赖服务器时间
+		* 缺点: 1.强依赖redis中1秒的过期策略 2:redis cluster模式下所有请求都会打到一个分片上
+	* 如果量小用server模式没问题，量大还是建议用client模式
 * jedisClient:redis客户端,如果redis为cluster模式fork项目自己改一下吧。
  
 
