@@ -11,7 +11,7 @@
 ### 2.使用 
 ```JAVA
 
-     Jedis jedis = new Jedis("127.0.0.1", 6379);
+     JedisCluster jedis = new JedisCluster(new HostAndPort("ikuboo1", 6379));
      //速率为:5次/秒
      RateLimiter rateLimiter = RateLimiter.create(5L,jedis);
      //获取许可
